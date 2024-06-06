@@ -1,5 +1,6 @@
 ﻿using JewelryMarket.Data;
 using JewelryMarket.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -24,14 +25,14 @@ namespace JewelryMarket.Controllers
         }
 
         // GET: api/Users
-        [HttpGet("get all users")]
+        [HttpGet("get all users"), Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}, search user by id")]
+        [HttpGet("{id}, search user by id"), Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -45,7 +46,7 @@ namespace JewelryMarket.Controllers
         }
 
         // PUT: api/Users/5
-        [HttpPut("{id}, update user")]
+        [HttpPut("{id}, update user"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.Id)
